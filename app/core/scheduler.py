@@ -1,13 +1,23 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from app.services.fetch_store import fetch_and_store_market_metrics
+from app.services.save_market_overview import save_market_overview
+from app.services.save_market_exchanges import save_market_exchanges
 
 scheduler = AsyncIOScheduler()
+interval = 30  # for testing
 
 def start_scheduler():
+    # save market metrics overview
     scheduler.add_job(
-        fetch_and_store_market_metrics,
+        save_market_overview,
         "interval",
-        hours=1   # "hours" "minutes" "seconds" 
+        minutes=interval   # "minutes" "minutes" "seconds" 
+    )
+
+    # save market exchanges
+    scheduler.add_job(
+        save_market_exchanges,
+        "interval",
+        minutes=interval  # por ejemplo cada 2 minutos
     )
     scheduler.start()
 

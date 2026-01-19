@@ -1,14 +1,14 @@
 from datetime import datetime, timezone
 from sqlalchemy import select
 
-from app.services.coincap_service import get_market_details
+from app.services.get_market_details import get_market_details
 from app.services.metrics import calculate_metrics
 from app.services.price_change import calculate_price_change
 from app.db.session import async_session
 from app.db.models import MarketMetric
 
-async def fetch_and_store_market_metrics():
-    markets = await get_market_details(limit=20)
+async def save_market_overview():
+    markets = await get_market_details(limit=20)  # limit set to 20 for testing
     metrics = calculate_metrics(markets)
 
     async with async_session() as session:
