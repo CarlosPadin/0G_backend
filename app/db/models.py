@@ -44,3 +44,13 @@ class MarketExchanges(Base):
         server_default=func.now()
     )
 
+# Day Volumes
+class MarketDailyVolume(Base):
+    __tablename__ = "market_daily_volume"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    volume_usd_24h: Mapped[float] = mapped_column(Float)
+    timestamp: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
