@@ -1,6 +1,7 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from app.services.save_market_overview import save_market_overview
 from app.services.save_market_exchanges import save_market_exchanges
+from app.services.save_market_volumes import calculate_daily_market_volume
 
 scheduler = AsyncIOScheduler()
 interval = 30  # for testing
@@ -17,7 +18,15 @@ def start_scheduler():
     scheduler.add_job(
         save_market_exchanges,
         "interval",
-        minutes=interval  # por ejemplo cada 2 minutos
+        minutes=interval  
+    )
+
+    # calculate daily market volume
+    scheduler.add_job(
+        calculate_daily_market_volume,
+        "cron",
+        hour=0, # every day at midnight
+        minute=1,
     )
     scheduler.start()
 

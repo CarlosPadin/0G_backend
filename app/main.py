@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 from app.core.scheduler import start_scheduler, shutdown_scheduler
 from app.db.models import Base
 from app.db.session import engine
-from app.routers import  market_overview, market_exchanges
+from app.routers import  market_overview, market_exchanges, daily_volumes
 from fastapi.middleware.cors import CORSMiddleware
 
 @asynccontextmanager
@@ -26,6 +26,7 @@ origins = [
 app = FastAPI(lifespan=lifespan)
 app.include_router(market_overview.router)
 app.include_router(market_exchanges.router)
+app.include_router(daily_volumes.router)
 
 app.add_middleware(
     CORSMiddleware,
