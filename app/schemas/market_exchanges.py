@@ -9,10 +9,8 @@ class MarketExchanges(BaseModel):
     price_usd: float
     volume_usd_24h: float
     volume_percent: float
+    price_change: float | None
 
     model_config = {
         "from_attributes": True  # <- allows to send objects to SQLAlchemy
     }
-
-
-    
