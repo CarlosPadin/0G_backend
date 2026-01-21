@@ -1,4 +1,3 @@
-# app/schedulers/maintenance.py
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from app.services.cleanup_old_data import cleanup_old_market_data
 
