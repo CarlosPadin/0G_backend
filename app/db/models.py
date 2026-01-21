@@ -1,6 +1,5 @@
 from datetime import datetime
 from sqlalchemy import Float, String, DateTime
-from sqlalchemy import UniqueConstraint
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.sql import func
 
@@ -38,6 +37,7 @@ class MarketExchanges(Base):
     price_usd: Mapped[float] = mapped_column(Float)
     volume_usd_24h: Mapped[float] = mapped_column(Float)
     volume_percent: Mapped[float] = mapped_column(Float)
+    price_change: Mapped[float] = mapped_column(Float, nullable=True)
 
     timestamp: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
