@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import ORIGINS_URL
 from app.core.scheduler import start_scheduler, shutdown_scheduler
-from app.routers import  market_overview, market_exchanges, daily_volumes
+from app.routers import  market_overview, market_exchanges, daily_volumes, test
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -20,6 +20,7 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(market_overview.router)
 app.include_router(market_exchanges.router)
 app.include_router(daily_volumes.router)
+app.include_router(test.router)
 
 # CORS
 app.add_middleware(
