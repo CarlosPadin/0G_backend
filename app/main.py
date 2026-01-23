@@ -31,6 +31,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.route("/")
-async def root():
-    return {"message": "Welcome to the 0G API"}
+@app.get("/")
+def root():
+    return {
+        "status": "ok",
+        "message": "Welcome to the 0G API"
+        }
