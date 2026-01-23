@@ -23,7 +23,7 @@ class MarketMetric(Base):
 
 # Values for table
 class MarketExchanges(Base):
-    __tablename__ = "market_overview"
+    __tablename__ = "market_exchanges"
 
     id: Mapped[int] = mapped_column(primary_key=True)
 
