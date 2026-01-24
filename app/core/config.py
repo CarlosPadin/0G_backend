@@ -14,5 +14,10 @@ COINCAP_ASSET_ID = os.getenv("COINCAP_ASSET_ID")
 DATABASE_URL: Final[str] = os.environ["DATABASE_URL"]
 
 # FRONTEND URLs
-ORIGINS_URL = os.getenv("ORIGINS_URL", "")
-ORIGINS_URL = [origin.strip() for origin in ORIGINS_URL.split(",") if origin.strip()]
+raw_origins = os.getenv("ORIGINS_URL", "")
+
+ORIGINS_URL: Final[list[str]] = [
+    origin.rstrip("/")
+    for origin in raw_origins.split(",")
+    if origin.strip()
+]
