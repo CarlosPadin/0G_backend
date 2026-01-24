@@ -1,26 +1,44 @@
-from fastapi import APIRouter, BackgroundTasks
+from fastapi import APIRouter, HTTPException,Depends
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.schemas.market_volumes import DailyVolume
-from app.services.save_market_volumes import calculate_daily_market_volume
-from app.db.session import async_session
 from app.db.models import MarketDailyVolume
+from app.db.session import get_db
+from app.schemas.market_volumes import DailyVolume
 
 router = APIRouter()
 
-@router.post("/calculate-daily-volume")     # just for testing
-async def run_daily_volume(background_tasks: BackgroundTasks):
-    background_tasks.add_task(calculate_daily_market_volume)
-    return {"status": "triggered"}
-
-
-@router.get("/market-volume/last-7-days", response_model=list[DailyVolume])
-async def get_last_7_days_volume():
-    async with async_session() as session:
+@router.get(
+    "/market-volume/last-7-days",
+    response_model=list[DailyVolume]
+)
+async def get_last_7_days_volume(
+    session: AsyncSession = Depends(get_db)
+):
+    try:
         result = await session.execute(
             select(MarketDailyVolume)
             .order_by(MarketDailyVolume.timestamp.desc())
             .limit(7)
         )
 
-        return result.scalars().all()
+        data = result.scalars().all()
+
+        if not data:
+            raise HTTPException(
+                status_code=404,
+                detail="No market volume data yet"
+            )
+
+        return data
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# To add values in the daily-volumes table
+# @router.post("/market-volume") 
+# async def run_daily_volume(background_tasks: BackgroundTasks):
+#     background_tasks.add_task(calculate_daily_market_volume)
+#     return {"status": "triggered"}
